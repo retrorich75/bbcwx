@@ -2927,7 +2927,7 @@ wxDriverWWO.prototype = {
 };  
 
 ////////////////////////////////////////////////////////////////////////////
-// ### Driver for Forecast.io
+// ### Driver for Dark Sky (previously Forecast.io)
 function wxDriverForecastIo(stationID, apikey) {
   this._fioinit(stationID, apikey);
 };
@@ -2935,15 +2935,15 @@ function wxDriverForecastIo(stationID, apikey) {
 wxDriverForecastIo.prototype = {
   __proto__: wxDriver.prototype,
   
-  drivertype: 'forecast.io',
+  drivertype: 'darksky.net',
   maxDays: 7, 
-  linkText: 'Forecast.io',
+  linkText: 'https://darksky.net/poweredby/',
   
   
   // these will be dynamically reset when data is loaded
-  linkURL: 'http://forecast.io',
+  linkURL: 'http://darksky.net/',
   
-  _baseURL: 'https://api.forecast.io/forecast/',
+  _baseURL: 'https://api.darksky.net/forecast/',
   
   lang_map: {
     'nl' : 'nl',
@@ -2987,16 +2987,16 @@ wxDriverForecastIo.prototype = {
     //this.capabilities.meta.country = false;
     //this._geocache = new Object();
     
-    //forecast.io sometime includes units in summaries
+    //darksky.net sometime includes units in summaries
     this.unitsInSummaries = true;
   },
   
   refreshData: function(deskletObj) {
     // reset the data object
     this._emptyData();
-    this.linkURL = 'http://forecast.io';
+    this.linkURL = 'http://darksky.net';
     
-    // forecast.io sometimes includes temp and snow accumulations in 
+    // darksky.net sometimes includes temp and snow accumulations in 
     // text summaries. To get these in imperial units we have to request
     // all responses be imperial using 'us'. Do this if user opts for 
     // Fahrenheit temperatures. Individual data points will have to be
@@ -3008,7 +3008,7 @@ wxDriverForecastIo.prototype = {
       let latlon = this.stationID.split(',')
       //this.data.wgs84.lat = latlon[0];
       //this.data.wgs84.lon = latlon[1];
-      //this.linkURL = 'http://forecast.io/#/f/' + this.stationID;
+      //this.linkURL = 'http://darksky.net/#/f/' + this.stationID;
       
       let apiurl = this._baseURL + encodeURIComponent(this.apikey) + '/' + encodeURIComponent(this.stationID) + '?units=' + this.units + '&exclude=minutely,hourly,alerts,flags';
       this.langcode = this.getLangCode();
@@ -3082,7 +3082,7 @@ wxDriverForecastIo.prototype = {
       
       this.data.wgs84.lat = json.latitude;
       this.data.wgs84.lon = json.longitude;
-      this.linkURL = 'http://forecast.io/#/f/' + json.latitude + ',' + json.longitude;
+      this.linkURL = 'http://darksky.net/#/f/' + json.latitude + ',' + json.longitude;
       
       this.data.status.cc = BBCWX_SERVICE_STATUS_OK; 
       this.data.status.forecast = BBCWX_SERVICE_STATUS_OK;
@@ -3122,7 +3122,7 @@ wxDriverForecastIo.prototype = {
   },
   
   _mapicon: function(iconcode) {
-    // https://developer.forecast.io/docs/v2
+    // https://darksky.net/dev/docs/response
     let icon_name = 'na';
     let iconmap = {
       'clear-day' : '32',
